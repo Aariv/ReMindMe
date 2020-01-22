@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.model.SpacedReminder;
 import com.ariv.remind.service.impl.SpacedReminderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +55,12 @@ public class ReminderResource {
 	@GetMapping("/all")
 	public ResponseData getAllProblems() {
 		List<Problem> problems = problemService.problems();
+		return new ResponseData(true, problems, "Success");
+	}
+
+	@GetMapping("/allReminders")
+	public ResponseData getAllProblemReminders() {
+		List<SpacedReminder> problems = spacedReminderService.findAll();
 		return new ResponseData(true, problems, "Success");
 	}
 

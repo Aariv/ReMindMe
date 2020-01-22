@@ -24,9 +24,5 @@ public interface SpacedReminderRepository extends JpaRepository<SpacedReminder, 
 
     Optional<List<SpacedReminder>> findAllByDate(@Param("date") LocalDate date);
 
-    /*@Query(value = "SELECT A.NAME, A.NUMBER, A.TYPE, A.FEEDBACK FROM PROBLEM A INNER JOIN " +
-            "SPACED_REMINDER B ON A.NUMBER=B.PROBLEMNUMBER")
-    List<Problem> findProblemByJoin(String problemNumber);*/
-
 
 }

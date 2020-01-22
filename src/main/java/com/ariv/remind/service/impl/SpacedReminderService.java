@@ -6,6 +6,8 @@ import com.ariv.remind.model.SpacedReminder;
 import com.ariv.remind.repository.ProblemRepository;
 import com.ariv.remind.repository.SpacedReminderRepository;
 import com.sun.xml.bind.v2.TODO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ public class SpacedReminderService {
 
     final SpacedReminderRepository spacedReminderRepository;
     final ProblemRepository problemRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
 
     public SpacedReminderService(SpacedReminderRepository spacedReminderRepository, ProblemRepository problemRepository) {
         this.spacedReminderRepository = spacedReminderRepository;
@@ -40,8 +43,8 @@ public class SpacedReminderService {
         way */
         LocalDate problemCompletionDate = problem.getDate();
         int range = 12;
-        int numberOne = 0;
-        int numberTwo = 1;
+        int numberOne = 1;
+        int numberTwo = 2;
         for(int i = 1; i <= range; i++) {
             SpacedReminder spacedReminder = new SpacedReminder();
             int sum = numberOne + numberTwo;
@@ -50,12 +53,13 @@ public class SpacedReminderService {
             numberTwo = sum;
             spacedReminder.setDate(reminderDate);
             spacedReminder.setProblemNumber(problem.getNumber());
-            spacedReminderRepository.save(spacedReminder);
+            SpacedReminder result = spacedReminderRepository.save(spacedReminder);
+            LOGGER.info("Scheduled problem '{}' on {} ", result.getProblemNumber(), result.getDate());
         }
     }
 
     public List<ProblemSenderInfo> getProblemsByDate(){
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.of(2020, 1, 25);
         List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
         List<Problem> problemList = new ArrayList<>();
         Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDate(date);
@@ -74,5 +78,9 @@ public class SpacedReminderService {
             problemSenderInfoList.add(problemSenderInfo);
         }
         return problemSenderInfoList;
+    }
+
+    public List<SpacedReminder> findAll() {
+        return spacedReminderRepository.findAll();
     }
 }
