@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>ReMindMe</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style type="text/css">
+		.demo-content{
+	        padding: 15px;
+	        font-size: 18px;
+	        background: #dbdfe5;
+	        margin-bottom: 15px;
+    	}
+	    
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log("init");
+			// render html table
+		    $.ajax({
+		        url: "http://localhost:3030/v1/reminders"
+		    }).then(function(data) {
+		       	
+		    });
+
+		    $('#submitBtn').click(function(){
+			    var str = $("#problem").val();
+			    var problemNumber = str.substr(0,str.indexOf(' '));
+			    var problemName = str.substr(str.indexOf(' ')+1); 
+			    var problemType = $("#problemType").val();
+			    var feedback = $("#feedback").val();
+			    var problem = {
+			    	name: problemName,
+			    	number: problemNumber,
+			    	type: problemType,
+			    	feedback: feedback
+			    }
+			    $.ajax({
+			        type: "POST",
+			        url: 'http://localhost:3030/v1/reminders',
+			        data: problem,
+			        success: function (data) {
+			            $(".share-link").html(data.result);
+			            $("#problem").val('');
+			            $("#problemType").val('');
+			            $("#feedback").val('');
+			        }
+			    });
+    		});
+
+		});
+	</script>
+</head>
+<body>
+
+	<h2 class="text-center my-3">ReMind</h2>
+	<div class="text-center">
+		Use your time wisely.
+	</div>
+    <div class="container mt-3">
+        <!--Row with two equal columns-->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="bs-example">
+	    			<h1 class="border-bottom pb-3 mb-4">Add To ReMind</h1>
+				    <form class="needs-validation">
+				        <div class="form-group row">
+				            <label class="col-sm-3 col-form-label" for="firstName">Problem:</label>
+				            <div class="col-sm-9">
+				                <input type="text" class="form-control" id="problem" placeholder="What's the problem" required>
+				            </div>
+				        </div>
+				        
+				        <div class="form-group row">
+				            <label class="col-sm-3 col-form-label">Type:</label>
+				            <div class="col-sm-6">
+				                <select id="problemType" class="custom-select" required>
+				                    <option value="">-Select-</option>
+				                    <option value="EASY">EASY</option>
+				                    <option value="MEDIUM">MEDIUM</option>
+				                    <option value="HARD">HARD</option>
+				                </select>
+				            </div>
+				        </div>
+				        
+				         <div class="form-group row">
+				            <label class="col-sm-3 col-form-label" for="feedback">Feeback:</label>
+				            <div class="col-sm-9">
+				                <textarea rows="3" class="form-control" id="feedback" placeholder="Your feedback please" required></textarea>
+				            </div>
+        				</div>
+
+				        <div class="form-group row">
+				            <div class="col-sm-9 offset-sm-3">
+				                <input id="submitBtn" type="submit" class="btn btn-primary" value="Submit">
+				                <a href="#">Reset</a>
+				            </div>
+				        </div>
+				    </form>
+			</div>
+            </div>
+            <div class="col-md-8">
+                <div class="demo-content bg-alt">
+                	<p id="showData"></p>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
