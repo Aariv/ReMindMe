@@ -39,10 +39,11 @@ public class ReMindMeApplication implements WebMvcConfigurer, CommandLineRunner 
 	 */
 	private void constructProblems() {
 		List<Problem> problemList = new ArrayList<Problem>();
-		Problem problem1 = new Problem("Find and Replace Pattern", "512", ProblemType.EASY, "");
-		Problem problem2 = new Problem("Find and Replace Pattern2", "513", ProblemType.MEDIUM, "");
-		Problem problem3 = new Problem("Find and Replace Pattern3", "514", ProblemType.HARD, "");
-		Problem problem4 = new Problem("Find and Replace Pattern4", "515", ProblemType.EASY, "");
+		Problem problem1 = new Problem("Defanging an IP Address", "1108", ProblemType.EASY, "Good");
+		Problem problem2 = new Problem("Convert Binary Number in a Linked List to Integer", "1290", ProblemType.EASY, "Good");
+		Problem problem3 = new Problem("Odd Even Linked List", "328", ProblemType.MEDIUM, "Needs more revision, Failed in 3 testcases");
+		Problem problem4 = new Problem("Maximum Product Subarray", "152", ProblemType.HARD,
+				"Very Hard Problem. Needs in-depth understanding of Dynamic Programming");
 		problemList.add(problem1);
 		problemList.add(problem2);
 		problemList.add(problem3);

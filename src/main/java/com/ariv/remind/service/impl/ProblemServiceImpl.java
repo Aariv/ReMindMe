@@ -3,9 +3,15 @@
  */
 package com.ariv.remind.service.impl;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.model.SpacedReminder;
+import com.ariv.remind.repository.SpacedReminderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ariv.remind.model.Problem;
@@ -20,6 +26,8 @@ import com.ariv.remind.service.ProblemService;
 public class ProblemServiceImpl implements ProblemService {
 
 	final ProblemRepository problemRepository;
+	@Autowired
+	SpacedReminderService spacedService;
 
 	/**
 	 * 
@@ -29,8 +37,11 @@ public class ProblemServiceImpl implements ProblemService {
 	}
 
 	@Override
-	public Boolean addToReminder(Problem problem) {
-		problemRepository.save(constructProblem(problem));
+	public Boolean saveProblem(Problem problem) {
+		Problem resultProblem = problemRepository.save(constructProblem(problem));
+		if(!spacedService.saveProblemInReminder(resultProblem)){
+			throw new IllegalArgumentException("Problem cannot be inserted into the spaced_reminder table");
+		}
 		return Boolean.TRUE;
 	}
 
@@ -39,7 +50,7 @@ public class ProblemServiceImpl implements ProblemService {
 	 * @return
 	 */
 	private Problem constructProblem(Problem problem) {
-		problem.setDate(new Date());
+		problem.setDate(LocalDate.now());
 		return problem;
 	}
 

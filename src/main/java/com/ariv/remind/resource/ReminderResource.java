@@ -3,8 +3,12 @@
  */
 package com.ariv.remind.resource;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.service.impl.SpacedReminderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,12 +27,14 @@ import com.ariv.remind.service.ProblemService;
 public class ReminderResource {
 
 	final ProblemService problemService;
+	final SpacedReminderService spacedReminderService;
 
 	/**
 	 * 
 	 */
-	public ReminderResource(ProblemService problemService) {
+	public ReminderResource(ProblemService problemService, SpacedReminderService spacedReminderService) {
 		this.problemService = problemService;
+		this.spacedReminderService = spacedReminderService;
 	}
 
 	@GetMapping("/health")
@@ -37,17 +43,23 @@ public class ReminderResource {
 	}
 
 	@PostMapping
-	public ResponseData addToReminder(@RequestBody Problem problem) {
-		boolean result = problemService.addToReminder(problem);
+	public ResponseData saveProblem(@RequestBody Problem problem) {
+		boolean result = problemService.saveProblem(problem);
 		if (result)
 			return new ResponseData(true, "", "Succcess");
 		else
 			return new ResponseData(false, "", "Failed");
 	}
 
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseData getAllProblems() {
 		List<Problem> problems = problemService.problems();
+		return new ResponseData(true, problems, "Success");
+	}
+
+	@GetMapping
+	public ResponseData getProblemsByDate(){
+		List<ProblemSenderInfo> problems = spacedReminderService.getProblemsByDate();
 		return new ResponseData(true, problems, "Success");
 	}
 }
