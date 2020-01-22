@@ -24,18 +24,24 @@
 		    $.ajax({
 		        url: "http://localhost:3030/v1/reminders"
 		    }).then(function(data) {
-		       	var data = data.data;
-		       	var count = 1;
+		       	var result = data.data;
+				var success = data.result;
 
-		       	for(var i = 0; i < data.length; i++) {
-		       		var record = data[i];
-		       		var row = '<tr onclick="set_background(\''+record+'\')" id='+generateId(count)+'>' +
-		       			'<td>'+ count++ +'</td>' +
-		       			'<td>'+ record.problem +'</td>' +
-		       			'<td>'+ record.problemType +'</td>' +
-		       			'</td>';
-		       		$("#records tbody").append(row);
-		       	}
+		       	var count = 1;
+				if(!success) {
+					$('#records').html("No Records Found");
+				} else {
+					for(var i = 0; i < result.length; i++) {
+		       			var record = result[i];
+						var row = '<tr onclick="set_background(\''+record+'\')" id='+generateId(count)+'>' +
+							'<td>'+ count++ +'</td>' +
+							'<td>'+ record.problem +'</td>' +
+							'<td>'+ record.problemType +'</td>' +
+							'</td>';
+						$("#records tbody").append(row);
+		       		}
+				}
+		       	
 		    });
 
 		    var generateId = function(id) {
@@ -48,7 +54,7 @@
 
 		    $('#submitBtn').click(function(){
 			    var str = $("#problem").val();
-			    var problemNumber = str.substr(0,str.indexOf(' '));
+			    var problemNumber = str.substr(0,str.indexOf('.'));
 			    var problemName = str.substr(str.indexOf(' ')+1); 
 			    var problemType = $("#problemType").val();
 			    var feedback = $("#feedback").val();
@@ -60,15 +66,16 @@
 			    }
 			    $.ajax({
 			        type: "POST",
+					contentType: "application/json; charset=utf-8",
 			        url: 'http://localhost:3030/v1/reminders',
-			        data: problem,
-			        success: function (data) {
+			        data: JSON.stringify(problem)
+			    }).then(function(data) {
+						console.log(data.result);
 			            $(".share-link").html(data.result);
 			            $("#problem").val('');
 			            $("#problemType").val('');
 			            $("#feedback").val('');
-			        }
-			    });
+				});
     		});
 
 		});

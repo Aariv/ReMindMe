@@ -6,12 +6,7 @@ package com.ariv.remind.model;
 import java.time.LocalDate;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * @author al
@@ -27,6 +22,7 @@ public class Problem {
 
 	private String name;
 
+	@Column(unique = true)
 	private String number;
 
 	private ProblemType type;

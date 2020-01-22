@@ -67,6 +67,10 @@ public class ReminderResource {
 	@GetMapping
 	public ResponseData getProblemsByDate(){
 		List<ProblemSenderInfo> problems = spacedReminderService.getProblemsByDate();
-		return new ResponseData(true, problems, "Success");
+		if(problems.isEmpty()) {
+			return new ResponseData(false, problems, "Failure");
+		} else {
+			return new ResponseData(true, problems, "Success");
+		}
 	}
 }

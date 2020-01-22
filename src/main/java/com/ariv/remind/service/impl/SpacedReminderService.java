@@ -64,7 +64,8 @@ public class SpacedReminderService {
         List<Problem> problemList = new ArrayList<>();
         Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDate(date);
         if(!spacedReminderList.isPresent()){
-            throw new Error("Reminder List is not present....Please check....");
+            LOGGER.debug("Reminder List is not present....Please check....");
+            return problemSenderInfoList;
         }
         for (SpacedReminder spacedReminder : spacedReminderList.get()) {
             problemList.add(problemRepository.findByNumber(spacedReminder.getProblemNumber()));
