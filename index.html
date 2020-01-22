@@ -7,27 +7,44 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 	<style type="text/css">
-		.demo-content{
-	        padding: 15px;
-	        font-size: 18px;
-	        background: #dbdfe5;
-	        margin-bottom: 15px;
-    	}
-	    
+		
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 	
 	<script type="text/javascript">
+		function set_background(record) {
+			var string = record.toSource();
+			console.log(string);
+		}
 		$(document).ready(function() {
 			console.log("init");
 			// render html table
 		    $.ajax({
 		        url: "http://localhost:3030/v1/reminders"
 		    }).then(function(data) {
-		       	
+		       	var data = data.data;
+		       	var count = 1;
+
+		       	for(var i = 0; i < data.length; i++) {
+		       		var record = data[i];
+		       		var row = '<tr onclick="set_background(\''+record+'\')" id='+generateId(count)+'>' +
+		       			'<td>'+ count++ +'</td>' +
+		       			'<td>'+ record.problem +'</td>' +
+		       			'<td>'+ record.problemType +'</td>' +
+		       			'</td>';
+		       		$("#records tbody").append(row);
+		       	}
 		    });
+
+		    var generateId = function(id) {
+		    	return id;
+     		};
+
+     		var display = function() {
+            	alert();
+        	}
 
 		    $('#submitBtn').click(function(){
 			    var str = $("#problem").val();
@@ -107,9 +124,24 @@
             </div>
             <div class="col-md-8">
                 <div class="demo-content bg-alt">
-                	<p id="showData"></p>
+                	<table id="records" class="table table-hover">
+					    <thead>
+					      <tr>
+					        <th>#</th>
+					        <th>Problem</th>
+					        <th>Type</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      
+					    </tbody>
+					  </table>
                 </div>
             </div>
+
+            <div id="dialog" title="Basic dialog" style="display:none">
+        		<p>This is the default dialog which is useful for displaying information. with the 'x' icon.</p>
+    		</div>
         </div>
        
     </div>
