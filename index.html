@@ -14,45 +14,54 @@
 
 	
 	<script type="text/javascript">
-		function set_background(record) {
-			var string = record.toSource();
-			console.log(string);
+		function feedback(record) {
+			alert(record);
 		}
+
+		function reset() {
+			$("#problem").val('');
+            $("#problemType").val('');
+            $("#feedback").val('');
+		}
+
+		function init() {
+			$.ajax({
+			        url: "http://localhost:3030/v1/reminders"
+			    }).then(function(data) {
+			       	var data = data.data;
+			       	var count = 1;
+
+			       	for(var i = 0; i < data.length; i++) {
+			       		var record = data[i];
+			       		var row = '<tr onclick="feedback(\''+ record.feedback +'\')" id='+generateId(count)+'>' +
+			       			'<td>'+ count++ +'</td>' +
+			       			'<td>'+ record.problem +'</td>' +
+			       			'<td>'+ record.problemType +'</td>' +
+			       			'</td>';
+			       		$("#records tbody").append(row);
+			       	}
+			    }).done(function (data) {
+				    //selectText('Id', data.country);
+				    console.log("done function in init");
+				    //init();
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+				    //var defaultOption = 'US'
+				    //selectDropdownByText('Id', defaultOption);
+				    //alert("Server is not reachable.")
+				    console.log(errorThrown);
+				});
+		}
+
+		function generateId(id) {
+			return id;
+		}
+
 		$(document).ready(function() {
 			console.log("init");
-			// render html table
-		    $.ajax({
-		        url: "http://localhost:3030/v1/reminders"
-		    }).then(function(data) {
-		       	var result = data.data;
-				var success = data.result;
-
-		       	var count = 1;
-				if(!success) {
-					$('#records').html("No Records Found");
-				} else {
-					for(var i = 0; i < result.length; i++) {
-		       			var record = result[i];
-						var row = '<tr onclick="set_background(\''+record+'\')" id='+generateId(count)+'>' +
-							'<td>'+ count++ +'</td>' +
-							'<td>'+ record.problem +'</td>' +
-							'<td>'+ record.problemType +'</td>' +
-							'</td>';
-						$("#records tbody").append(row);
-		       		}
-				}
-		       	
-		    });
-
-		    var generateId = function(id) {
-		    	return id;
-     		};
-
-     		var display = function() {
-            	alert();
-        	}
-
-		    $('#submitBtn').click(function(){
+			init();
+			
+		    $('#submitBtn').click(function(e){
+		    	
 			    var str = $("#problem").val();
 			    var problemNumber = str.substr(0,str.indexOf('.'));
 			    var problemName = str.substr(str.indexOf(' ')+1); 
@@ -68,13 +77,19 @@
 			        type: "POST",
 					contentType: "application/json; charset=utf-8",
 			        url: 'http://localhost:3030/v1/reminders',
+			        contentType: "application/json; charset=utf-8",
 			        data: JSON.stringify(problem)
-			    }).then(function(data) {
-						console.log(data.result);
-			            $(".share-link").html(data.result);
-			            $("#problem").val('');
-			            $("#problemType").val('');
-			            $("#feedback").val('');
+			        
+			    }).done(function (data) {
+				    //selectText('Id', data.country);
+				    console.log("done in submit function");
+				    reset();
+				    init();
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+				    //var defaultOption = 'US'
+				    //selectDropdownByText('Id', defaultOption);
+				    alert("Server is not reachable.")
+				    console.log(errorThrown);
 				});
     		});
 
@@ -123,7 +138,7 @@
 				        <div class="form-group row">
 				            <div class="col-sm-9 offset-sm-3">
 				                <input id="submitBtn" type="submit" class="btn btn-primary" value="Submit">
-				                <a href="#">Reset</a>
+				                <a href="#" onclick="reset();">Reset</a>
 				            </div>
 				        </div>
 				    </form>
