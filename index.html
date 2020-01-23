@@ -15,8 +15,7 @@
 	
 	<script type="text/javascript">
 		function set_background(record) {
-			var string = record.toSource();
-			console.log(string);
+			alert(record);
 		}
 		$(document).ready(function() {
 			console.log("init");
@@ -29,7 +28,7 @@
 
 		       	for(var i = 0; i < data.length; i++) {
 		       		var record = data[i];
-		       		var row = '<tr onclick="set_background(\''+record+'\')" id='+generateId(count)+'>' +
+		       		var row = '<tr onclick="set_background(\''+ record.feedback +'\')" id='+generateId(count)+'>' +
 		       			'<td>'+ count++ +'</td>' +
 		       			'<td>'+ record.problem +'</td>' +
 		       			'<td>'+ record.problemType +'</td>' +
