@@ -61,10 +61,10 @@ public class SpacedReminderService {
     }
 
     public List<ProblemSenderInfo> getProblemsByDate(){
-        LocalDate date = LocalDate.of(2020, 1, 26);
+        LocalDate date = LocalDate.of(2020, 1, 28);
         List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
         List<Problem> problemList = new ArrayList<>();
-        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDateBeforeAndIsRevisedFalse(date);
+        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDateLessThanEqualAndIsRevisedFalse(date);
         if(!spacedReminderList.isPresent()){
             LOGGER.debug("Reminder List is not present....Please check....");
             return problemSenderInfoList;

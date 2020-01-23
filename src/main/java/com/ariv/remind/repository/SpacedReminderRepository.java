@@ -22,7 +22,6 @@ import java.util.Optional;
 @Repository
 public interface SpacedReminderRepository extends JpaRepository<SpacedReminder, Integer> {
 
-    Optional<List<SpacedReminder>> findAllByDateBeforeAndIsRevisedFalse(LocalDate date);
-
+    Optional<List<SpacedReminder>> findAllByDateLessThanEqualAndIsRevisedFalse(LocalDate date);
 
 }
