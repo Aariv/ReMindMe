@@ -3,14 +3,10 @@
  */
 package com.ariv.remind.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * @author al
@@ -26,14 +22,15 @@ public class Problem {
 
 	private String name;
 
+	@Column(unique = true)
 	private String number;
 
 	private ProblemType type;
 
 	private String feedback;
 
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	private LocalDate date;
+
 
 	/**
 	 * 
@@ -49,7 +46,7 @@ public class Problem {
 	 * @param feedback
 	 * @param date
 	 */
-	public Problem(String name, String number, ProblemType type, String feedback, Date date) {
+	public Problem(String name, String number, ProblemType type, String feedback, LocalDate date) {
 		super();
 		this.name = name;
 		this.number = number;
@@ -63,7 +60,6 @@ public class Problem {
 	 * @param number
 	 * @param type
 	 * @param feedback
-	 * @param date
 	 */
 	public Problem(String name, String number, ProblemType type, String feedback) {
 		super();
@@ -146,14 +142,14 @@ public class Problem {
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

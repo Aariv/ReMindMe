@@ -63,7 +63,7 @@
 		    $('#submitBtn').click(function(e){
 		    	
 			    var str = $("#problem").val();
-			    var problemNumber = str.substr(0,str.indexOf(' '));
+			    var problemNumber = str.substr(0,str.indexOf('.'));
 			    var problemName = str.substr(str.indexOf(' ')+1); 
 			    var problemType = $("#problemType").val();
 			    var feedback = $("#feedback").val();
@@ -75,6 +75,7 @@
 			    }
 			    $.ajax({
 			        type: "POST",
+					contentType: "application/json; charset=utf-8",
 			        url: 'http://localhost:3030/v1/reminders',
 			        contentType: "application/json; charset=utf-8",
 			        data: JSON.stringify(problem)
