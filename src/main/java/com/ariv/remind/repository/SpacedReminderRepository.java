@@ -22,7 +22,7 @@ import java.util.Optional;
 @Repository
 public interface SpacedReminderRepository extends JpaRepository<SpacedReminder, Integer> {
 
-    Optional<List<SpacedReminder>> findAllByDate(@Param("date") LocalDate date);
+    Optional<List<SpacedReminder>> findAllByDateAndIsRevised(LocalDate date, Boolean isRevised);
 
 
 }

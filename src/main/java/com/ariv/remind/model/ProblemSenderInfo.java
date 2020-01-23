@@ -9,6 +9,16 @@ public class ProblemSenderInfo {
     private String feedback;
     private ProblemType problemType;
 
+    public Boolean getRevised() {
+        return isRevised;
+    }
+
+    public void setRevised(Boolean revised) {
+        isRevised = revised;
+    }
+
+    private Boolean isRevised;
+
     public ProblemType getProblemType() {
         return problemType;
     }

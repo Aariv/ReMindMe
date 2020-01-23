@@ -13,7 +13,6 @@ import java.util.List;
  *
  */
 @Entity
-@Table(name = "spaced_reminder")
 public class SpacedReminder {
 
 	@Id
@@ -23,6 +22,8 @@ public class SpacedReminder {
 	private String problemNumber;
 
 	private LocalDate date;
+
+	private Boolean isRevised;
 
 	public Integer getId() {
 		return id;
@@ -46,5 +47,13 @@ public class SpacedReminder {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Boolean getRevised() {
+		return isRevised;
+	}
+
+	public void setRevised(Boolean revised) {
+		isRevised = revised;
 	}
 }

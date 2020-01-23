@@ -25,6 +25,7 @@ public class SpacedReminderService {
 
     final SpacedReminderRepository spacedReminderRepository;
     final ProblemRepository problemRepository;
+    private static final Boolean isRevised = Boolean.FALSE;
     private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
 
     public SpacedReminderService(SpacedReminderRepository spacedReminderRepository, ProblemRepository problemRepository) {
@@ -53,16 +54,17 @@ public class SpacedReminderService {
             numberTwo = sum;
             spacedReminder.setDate(reminderDate);
             spacedReminder.setProblemNumber(problem.getNumber());
+            spacedReminder.setRevised(Boolean.FALSE);
             SpacedReminder result = spacedReminderRepository.save(spacedReminder);
             LOGGER.info("Scheduled problem '{}' on {} ", result.getProblemNumber(), result.getDate());
         }
     }
 
     public List<ProblemSenderInfo> getProblemsByDate(){
-        LocalDate date = LocalDate.of(2020, 1, 25);
+        LocalDate date = LocalDate.of(2020, 1, 26);
         List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
         List<Problem> problemList = new ArrayList<>();
-        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDate(date);
+        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDateAndIsRevised(date, isRevised);
         if(!spacedReminderList.isPresent()){
             LOGGER.debug("Reminder List is not present....Please check....");
             return problemSenderInfoList;
