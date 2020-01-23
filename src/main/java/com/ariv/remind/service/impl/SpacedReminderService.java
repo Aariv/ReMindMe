@@ -64,7 +64,7 @@ public class SpacedReminderService {
         LocalDate date = LocalDate.of(2020, 1, 26);
         List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
         List<Problem> problemList = new ArrayList<>();
-        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDateAndIsRevised(date, isRevised);
+        Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository.findAllByDateBeforeAndIsRevisedFalse(date);
         if(!spacedReminderList.isPresent()){
             LOGGER.debug("Reminder List is not present....Please check....");
             return problemSenderInfoList;
