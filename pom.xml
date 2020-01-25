@@ -44,11 +44,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- PostgreSQL -->
+		<!-- PostgreSQL 
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>
