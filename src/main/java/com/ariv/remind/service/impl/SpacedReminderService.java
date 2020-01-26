@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ariv.remind.model.Problem;
 import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.model.ReminderFeedback;
 import com.ariv.remind.model.SpacedReminder;
 import com.ariv.remind.repository.ProblemRepository;
 import com.ariv.remind.repository.SpacedReminderRepository;
@@ -65,7 +66,6 @@ public class SpacedReminderService {
 	public List<ProblemSenderInfo> getProblemsByDate() {
 		LocalDate date = LocalDate.of(2020, 1, 29);
 		List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
-		List<Problem> problemList = new ArrayList<>();
 		Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository
 				.findAllByDateLessThanEqualAndIsRevisedFalse(date);
 		if (!spacedReminderList.isPresent()) {
@@ -73,12 +73,10 @@ public class SpacedReminderService {
 			return problemSenderInfoList;
 		}
 		for (SpacedReminder spacedReminder : spacedReminderList.get()) {
-			problemList.add(spacedReminder.getProblem());
-		}
-		for (Problem problem : problemList) {
+			Problem problem = spacedReminder.getProblem();
 			ProblemSenderInfo problemSenderInfo = new ProblemSenderInfo();
-			String problemStr = problem.getName();
-			problemSenderInfo.setProblem(problemStr);
+			problemSenderInfo.setProblemId(spacedReminder.getId());
+			problemSenderInfo.setProblem(problem.getName());
 			problemSenderInfo.setReferenceLink(problem.getReferenceLink());
 			problemSenderInfo.setFeedback(problem.getFeedback());
 			problemSenderInfoList.add(problemSenderInfo);
@@ -88,5 +86,19 @@ public class SpacedReminderService {
 
 	public List<SpacedReminder> findAll() {
 		return spacedReminderRepository.findAll();
+	}
+
+	public ProblemSenderInfo findById(Integer id) {
+		SpacedReminder reminder = spacedReminderRepository.getOne(id);
+		return new ProblemSenderInfo(reminder.getId(), reminder.getProblem().getName(),
+				reminder.getProblem().getReferenceLink(), reminder.getProblem().getFeedback());
+	}
+
+	public SpacedReminder updateSpacedReminder(ReminderFeedback reminderFeedback) {
+		SpacedReminder resultFromDB = spacedReminderRepository.getOne(reminderFeedback.getId());
+		resultFromDB.setIsRevised(reminderFeedback.getRevised());
+		resultFromDB.setReminderFeedback(reminderFeedback.getFeedback());
+		spacedReminderRepository.save(resultFromDB);
+		return resultFromDB;
 	}
 }
