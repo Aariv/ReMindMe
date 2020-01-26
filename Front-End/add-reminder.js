@@ -3,10 +3,19 @@ function onSubmit() {
 	var name = $("#name").val();
 	var referenceLink = $("#referenceLink").val();
 	var feedback = $("#feedback").val();
-	console.log(name);
+	//console.log(name);
+	if(name === '') {
+		showAddInfoToast();
+		$("#name").val("");
+		return;
+	} else if(referenceLink === '') {
+		showAddInfoToast();
+		$("#referenceLink").val("");
+		return;
+	}
 	var problem = {
 	    	name: name,
-	    	number: referenceLink,
+	    	referenceLink: referenceLink,
 	    	feedback: feedback
 	}
 	    $.ajax({
@@ -24,6 +33,13 @@ function onSubmit() {
 		$("#feedback").val("");
 	    }).fail(function (jqXHR, textStatus, errorThrown) {
 		   console.log("error in submit function");
-			showSuccessToast();
+		   var status = jqXHR.status;
+		   if(status === 500) {
+			console.log(status);
+			showInteralDangerToast();
+		   } else {
+			showDangerToast();
+		   }
+		   console.log(status);
 	    });
 }

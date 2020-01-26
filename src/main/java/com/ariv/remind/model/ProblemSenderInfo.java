@@ -5,31 +5,32 @@ package com.ariv.remind.model;
  *
  */
 public class ProblemSenderInfo {
-    private String problem;
-    private String feedback;
-    private ProblemType problemType;
+	private String problem;
+	private String referenceLink;
+	private String feedback;
 
-    public ProblemType getProblemType() {
-        return problemType;
-    }
+	public String getProblem() {
+		return problem;
+	}
 
-    public void setProblemType(ProblemType problemType) {
-        this.problemType = problemType;
-    }
+	public void setProblem(String problem) {
+		this.problem = problem;
+	}
 
-    public String getProblem() {
-        return problem;
-    }
+	public String getFeedback() {
+		return feedback;
+	}
 
-    public void setProblem(String problem) {
-        this.problem = problem;
-    }
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
 
-    public String getFeedback() {
-        return feedback;
-    }
+	public String getReferenceLink() {
+		return referenceLink;
+	}
 
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
+	public void setReferenceLink(String referenceLink) {
+		this.referenceLink = referenceLink;
+	}
+
 }

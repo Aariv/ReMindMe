@@ -3,13 +3,8 @@
  */
 package com.ariv.remind.resource;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-import com.ariv.remind.model.ProblemSenderInfo;
-import com.ariv.remind.model.SpacedReminder;
-import com.ariv.remind.service.impl.SpacedReminderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ariv.remind.model.Problem;
+import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.model.SpacedReminder;
 import com.ariv.remind.service.ProblemService;
+import com.ariv.remind.service.impl.SpacedReminderService;
 
 /**
  * @author al

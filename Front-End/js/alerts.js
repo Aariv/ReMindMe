@@ -4,7 +4,7 @@
     resetToastPosition();
     $.toast({
       heading: 'Success',
-      text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+      text: 'Reminder added successfully.',
       showHideTransition: 'slide',
       icon: 'success',
       loaderBg: '#f96868',
@@ -17,6 +17,19 @@
     $.toast({
       heading: 'Info',
       text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+      showHideTransition: 'slide',
+      icon: 'info',
+      loaderBg: '#46c35f',
+      position: 'top-right'
+    })
+  };
+
+  showAddInfoToast = function() {
+    'use strict';
+    resetToastPosition();
+    $.toast({
+      heading: 'Info',
+      text: 'Please fill up mandatory fields.',
       showHideTransition: 'slide',
       icon: 'info',
       loaderBg: '#46c35f',
@@ -40,13 +53,27 @@
     resetToastPosition();
     $.toast({
       heading: 'Danger',
-      text: 'And these were just the basic demos! Scroll down to check further details on how to customize the output.',
+      text: 'Could not add reminder. Check if you have filled all required fields.',
       showHideTransition: 'slide',
       icon: 'error',
       loaderBg: '#f2a654',
       position: 'top-right'
     })
   };
+
+  showInteralDangerToast = function() {
+    'use strict';
+    resetToastPosition();
+    $.toast({
+      heading: 'Danger',
+      text: 'Internal Server Error. Please contact the admin.',
+      showHideTransition: 'slide',
+      icon: 'error',
+      loaderBg: '#f2a654',
+      position: 'top-right'
+    })
+  };
+
   showToastPosition = function(position) {
     'use strict';
     resetToastPosition();
