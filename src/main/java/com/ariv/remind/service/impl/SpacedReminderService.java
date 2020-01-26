@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.ariv.remind.model.PreviousFeedback;
 import com.ariv.remind.model.Problem;
 import com.ariv.remind.model.ProblemSenderInfo;
 import com.ariv.remind.model.ReminderFeedback;
@@ -92,6 +93,24 @@ public class SpacedReminderService {
 		SpacedReminder reminder = spacedReminderRepository.getOne(id);
 		return new ProblemSenderInfo(reminder.getId(), reminder.getProblem().getName(),
 				reminder.getProblem().getReferenceLink(), reminder.getProblem().getFeedback());
+	}
+	
+	public List<PreviousFeedback> findByIdAndProblem(Integer id) {
+		LocalDate date = LocalDate.of(2020, 1, 29);
+		List<PreviousFeedback> previousFeedbackList = new ArrayList<>();
+		SpacedReminder reminder = spacedReminderRepository.getOne(id);
+		Problem problem = reminder.getProblem();
+		Optional<List<SpacedReminder>> spacedReminders = spacedReminderRepository.findAllByDateLessThanEqualAndIsRevisedTrueAndProblem(date, problem);
+		if (!spacedReminders.isPresent()) {
+			LOGGER.debug("Reminder List is not present....Please check....");
+			return previousFeedbackList;
+		}
+		for (SpacedReminder spacedReminder : spacedReminders.get()) {
+			PreviousFeedback previousFeedback = new PreviousFeedback();
+			previousFeedback.setFeedback(spacedReminder.getReminderFeedback());
+			previousFeedbackList.add(previousFeedback);
+		}
+		return previousFeedbackList;
 	}
 
 	public SpacedReminder updateSpacedReminder(ReminderFeedback reminderFeedback) {
