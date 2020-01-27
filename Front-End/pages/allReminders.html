@@ -24,17 +24,15 @@
         <script src="../list-reminder.js"></script>
 
         <script type="text/javascript">
-            function gotoDetailPage(id) {
-                console.log("detail page");
-                console.log(id);
-                window.location.href = "detail.html?id=" +id;
-            }
+            var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
+            var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
             $(document).ready(function() {
                 //anything in here will only be called/work when the document is ready.
 
              //call your function in here, instead of bodyonload
              $.ajax({
-                url: "http://localhost:3030/v1/reminders/allConcepts"
+                url: "http://localhost:3030/v1/reminders/allConcepts",
+                headers: {"Authorization": 'Bearer ' + token}
                 }).then(function(data) {
                     var data = data.data;
                     var count = 1;

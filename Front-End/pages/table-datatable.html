@@ -31,10 +31,12 @@
             }
             $(document).ready(function() {
                 //anything in here will only be called/work when the document is ready.
-
+                var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
+                var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
              //call your function in here, instead of bodyonload
-             $.ajax({
-                url: "http://localhost:3030/v1/reminders"
+                $.ajax({
+                    url: "http://localhost:3030/v1/reminders",
+                    headers: {"Authorization": 'Bearer ' + token}
                 }).then(function(data) {
                     var data = data.data;
                     var count = 1;

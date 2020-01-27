@@ -1,9 +1,8 @@
 package com.ariv.remind.security.rest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -12,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ariv.remind.security.rest.dto.LoginDto;
+
+import com.ariv.remind.resource.ResponseData;
 import com.ariv.remind.security.jwt.JWTFilter;
 import com.ariv.remind.security.jwt.TokenProvider;
-
-import javax.validation.Valid;
+import com.ariv.remind.security.rest.dto.LoginDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Controller to authenticate users.
@@ -35,7 +35,7 @@ public class AuthenticationRestController {
    }
 
    @PostMapping("/authenticate")
-   public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginDto loginDto) {
+   public ResponseData authorize(@Valid @RequestBody LoginDto loginDto) {
 
       UsernamePasswordAuthenticationToken authenticationToken =
          new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -49,7 +49,7 @@ public class AuthenticationRestController {
       HttpHeaders httpHeaders = new HttpHeaders();
       httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-      return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+      return new ResponseData(true, new JWTToken(jwt), "Success");
    }
 
    /**
