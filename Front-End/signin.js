@@ -1,21 +1,34 @@
 function onSignIn(e) {
+	//e.preventDefault();
 	var username = $("#username").val();
 	var password = $("#password").val();
 	var rememberMe = $("#item_checkbox").val();
 	//console.log(name);
-	if(username === '') {
+	/*if(username === '') {
 		showAddInfoToast();
 		return;
 	} else if(password === '') {
 		showAddInfoToast();
 		return;
-	}
+	}*/
 	var loginDto = {
-	    	username: username,
-	    	password: password
+	    	username: username != '' ? username : 'ariv@gmail.com',
+	    	password: password != '' ? password : 'ariv@123'
 	    	//rememberMe: feedback
 	}
-    $.ajax({
+	$.ajax({
+	      contentType: "application/json; charset=utf-8",
+	      data: JSON.stringify(loginDto),
+	      timeout: 1000,
+	      type: 'POST',
+	      url: 'http://localhost:3030/v1/api/authenticate'
+    }).done(function(data, textStatus, jqXHR) {
+      var preLoginInfo = JSON.parse($.cookie('dashboard.pre.login.request'));
+      window.location = preLoginInfo.url;
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      alert('Booh! Wrong credentials, try again!');
+    });
+    /*$.ajax({
         type: "POST",
 		contentType: "application/json; charset=utf-8",
         url: 'http://localhost:3030/v1/api/authenticate',
@@ -35,8 +48,8 @@ function onSignIn(e) {
 	    console.log(data);
 		showSuccessToast();
 		localStorage.setItem('token', data.data);
-		$("#username").val("");
-		$("#password").val("");
+		$("#username").val("test");
+		$("#password").val("test");
 		$("#rememberMe").val("");
     }).fail(function (jqXHR, textStatus, errorThrown) {
 	   console.log("error in submit function");
@@ -48,5 +61,5 @@ function onSignIn(e) {
 		showDangerToast();
 	   }
 	   console.log(status);
-    });
+    });*/
 }

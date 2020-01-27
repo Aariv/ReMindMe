@@ -43,11 +43,11 @@
                             <p>Happy to see you again!</p>
                             <form>
                                 <div class="form-group">
-                                    <input type="text" id="username" class="form-control" placeholder="Email" required="true" value="">
+                                    <input type="text" id="username" class="form-control" placeholder="Email" value="">
                                     <i class="ik ik-user"></i>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" id="password" class="form-control" placeholder="Password" required="true" value="">
+                                    <input type="password" id="password" class="form-control" placeholder="Password" value="">
                                     <i class="ik ik-lock"></i>
                                 </div>
                                 <div class="row">
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="sign-btn text-center">
-                                    <button id="signIn" class="btn btn-theme" onclick="onSignIn()">Sign In</button>
+                                    <button id="signIn" class="btn btn-theme" >Sign In</button>
                                 </div>
                             </form>
                             <div class="register">
@@ -83,6 +83,44 @@
         <script src="plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
         <script src="plugins/screenfull/dist/screenfull.js"></script>
         <script src="dist/js/theme.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $( "#signIn" ).click(function(e) {
+                    e.preventDefault();
+                    var username = $("#username").val();
+                    var password = $("#password").val();
+                    var rememberMe = $("#item_checkbox").val();
+                    //console.log(name);
+                    /*if(username === '') {
+                        showAddInfoToast();
+                        return;
+                    } else if(password === '') {
+                        showAddInfoToast();
+                        return;
+                    }*/
+                    var loginDto = {
+                            username: username != '' ? username : 'ariv@gmail.com',
+                            password: password != '' ? password : 'ariv@123'
+                            //rememberMe: feedback
+                    }
+                    $.ajax({
+                          contentType: "application/json; charset=utf-8",
+                          data: JSON.stringify(loginDto),
+                          timeout: 1000,
+                          type: 'POST',
+                          url: 'http://localhost:3030/v1/api/authenticate'
+                    }).done(function(data, textStatus, jqXHR) {
+                        console.log(data.data);
+
+                      localStorage.setItem('token', data.data);
+                      window.location = 'dashboard.html';
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                      alert('Booh! Wrong credentials, try again!');
+                    });
+                });
+            });
+        
+        </script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
