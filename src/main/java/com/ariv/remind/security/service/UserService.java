@@ -45,6 +45,7 @@ public class UserService {
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(authority);
 		user.setAuthorities(authorities);
+		user.setActivated(true);
 		User userFromDb = userRepository.save(user);
 		if (userFromDb != null) {
 			return new ResponseData(true, userFromDb, "Success");

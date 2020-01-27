@@ -1,10 +1,10 @@
-function onRegister(e) {
+function onRegister() {
 	var email = $("#email").val();
 	var password = $("#password").val();
 	var confirmPassword = $("#confirmPassword").val();
 	var agreement = $("#item_checkbox").val();
 	//console.log(name);
-	if(username === '') {
+	if(email === '') {
 		showAddInfoToast();
 		return;
 	} else if(password === '') {
