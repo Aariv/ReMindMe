@@ -4,6 +4,7 @@
 package com.ariv.remind.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import java.util.Optional;
 import com.ariv.remind.model.ProblemSenderInfo;
 import com.ariv.remind.model.SpacedReminder;
 import com.ariv.remind.repository.SpacedReminderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ public class ProblemServiceImpl implements ProblemService {
 	final ProblemRepository problemRepository;
 	@Autowired
 	SpacedReminderService spacedService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
 
 	/**
 	 * 
@@ -65,6 +69,26 @@ public class ProblemServiceImpl implements ProblemService {
 		Problem problem = problemRepository.getOne(id);
 		ProblemDto problemDto = new ProblemDto(problem.getName(), problem.getReferenceLink(), problem.getFeedback());
 		return problemDto;
+	}
+
+	@Override
+	public List<ProblemSenderInfo> findAll() {
+		List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
+		List<Problem> problemList = problemRepository.findAll();
+		if (problemList.isEmpty()) {
+			LOGGER.debug("Reminder List is not present....Please check....");
+			return problemSenderInfoList;
+		}
+		for (Problem problem : problemList) {
+			ProblemSenderInfo problemSenderInfo = new ProblemSenderInfo();
+			problemSenderInfo.setProblemId(problem.getId());
+			problemSenderInfo.setProblem(problem.getName());
+			problemSenderInfo.setReferenceLink(problem.getReferenceLink());
+			problemSenderInfo.setFeedback(problem.getFeedback());
+			problemSenderInfo.setDate(problem.getDate());
+			problemSenderInfoList.add(problemSenderInfo);
+		}
+		return problemSenderInfoList;
 	}
 
 }

@@ -71,7 +71,13 @@ public class ReminderResource {
 
 	@GetMapping("/allReminders")
 	public ResponseData getAllProblemReminders() {
-		List<SpacedReminder> problems = spacedReminderService.findAll();
+		List<ProblemSenderInfo> problems = spacedReminderService.findAll();
+		return new ResponseData(true, problems, "Success");
+	}
+
+	@GetMapping("/allConcepts")
+	public ResponseData getAllConcepts() {
+		List<ProblemSenderInfo> problems = problemService.findAll();
 		return new ResponseData(true, problems, "Success");
 	}
 	

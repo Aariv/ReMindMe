@@ -27,11 +27,13 @@ public class SpacedReminderService {
 	final SpacedReminderRepository spacedReminderRepository;
 	final ProblemRepository problemRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
+	private LocalDate date;
 
 	public SpacedReminderService(SpacedReminderRepository spacedReminderRepository,
 			ProblemRepository problemRepository) {
 		this.spacedReminderRepository = spacedReminderRepository;
 		this.problemRepository = problemRepository;
+		date = LocalDate.now();
 	}
 
 	public Boolean saveProblemInReminder(Problem problem) {
@@ -65,7 +67,8 @@ public class SpacedReminderService {
 	}
 
 	public List<ProblemSenderInfo> getProblemsByDate() {
-		LocalDate date = LocalDate.of(2020, 1, 29);
+//		LocalDate date = LocalDate.of(2020, 1, 29);
+//		LocalDate date = LocalDate.now();
 		List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
 		Optional<List<SpacedReminder>> spacedReminderList = spacedReminderRepository
 				.findAllByDateLessThanEqualAndIsRevisedFalse(date);
@@ -85,8 +88,23 @@ public class SpacedReminderService {
 		return problemSenderInfoList;
 	}
 
-	public List<SpacedReminder> findAll() {
-		return spacedReminderRepository.findAll();
+	public List<ProblemSenderInfo> findAll() {
+		List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
+		List<SpacedReminder> spacedReminderList = spacedReminderRepository.findAll();
+		if (spacedReminderList.isEmpty()) {
+			LOGGER.debug("Reminder List is not present....Please check....");
+			return problemSenderInfoList;
+		}
+		for (SpacedReminder spacedReminder : spacedReminderList) {
+			Problem problem = spacedReminder.getProblem();
+			ProblemSenderInfo problemSenderInfo = new ProblemSenderInfo();
+			problemSenderInfo.setProblemId(spacedReminder.getId());
+			problemSenderInfo.setProblem(problem.getName());
+			problemSenderInfo.setReferenceLink(problem.getReferenceLink());
+			problemSenderInfo.setFeedback(problem.getFeedback());
+			problemSenderInfoList.add(problemSenderInfo);
+		}
+		return problemSenderInfoList;
 	}
 
 	public ProblemSenderInfo findById(Integer id) {
@@ -96,7 +114,7 @@ public class SpacedReminderService {
 	}
 	
 	public List<PreviousFeedback> findByIdAndProblem(Integer id) {
-		LocalDate date = LocalDate.of(2020, 1, 29);
+//		LocalDate date = LocalDate.of(2020, 1, 29);
 		List<PreviousFeedback> previousFeedbackList = new ArrayList<>();
 		SpacedReminder reminder = spacedReminderRepository.getOne(id);
 		Problem problem = reminder.getProblem();

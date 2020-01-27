@@ -1,5 +1,7 @@
 package com.ariv.remind.model;
 
+import java.time.LocalDate;
+
 /**
  * @author zakir
  *
@@ -9,7 +11,7 @@ public class ProblemSenderInfo {
 	private String problem;
 	private String referenceLink;
 	private String feedback;
-	
+	private LocalDate date;
 	
 	public ProblemSenderInfo() {}
 
@@ -58,6 +60,14 @@ public class ProblemSenderInfo {
 
 	public void setReferenceLink(String referenceLink) {
 		this.referenceLink = referenceLink;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 }
