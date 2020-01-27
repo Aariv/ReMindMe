@@ -11,10 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ariv.remind.security.model.User;
 
 /**
  * @author al
@@ -39,6 +41,10 @@ public class Problem {
 
 	@OneToMany(mappedBy = "problem", fetch = FetchType.LAZY)
 	private Set<SpacedReminder> spacedReminders;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 	/**
 	 * 
@@ -70,8 +76,7 @@ public class Problem {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -85,8 +90,7 @@ public class Problem {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -100,8 +104,7 @@ public class Problem {
 	}
 
 	/**
-	 * @param number
-	 *            the number to set
+	 * @param number the number to set
 	 */
 	public void setReferenceLink(String number) {
 		this.referenceLink = number;
@@ -115,8 +118,7 @@ public class Problem {
 	}
 
 	/**
-	 * @param feedback
-	 *            the feedback to set
+	 * @param feedback the feedback to set
 	 */
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
@@ -130,8 +132,7 @@ public class Problem {
 	}
 
 	/**
-	 * @param date
-	 *            the date to set
+	 * @param date the date to set
 	 */
 	public void setDate(LocalDate date) {
 		this.date = date;
@@ -145,11 +146,24 @@ public class Problem {
 	}
 
 	/**
-	 * @param spacedReminders
-	 *            the spacedReminders to set
+	 * @param spacedReminders the spacedReminders to set
 	 */
 	public void setSpacedReminders(Set<SpacedReminder> spacedReminders) {
 		this.spacedReminders = spacedReminders;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

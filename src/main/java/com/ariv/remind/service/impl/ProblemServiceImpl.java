@@ -5,13 +5,8 @@ package com.ariv.remind.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import com.ariv.remind.model.ProblemSenderInfo;
-import com.ariv.remind.model.SpacedReminder;
-import com.ariv.remind.repository.SpacedReminderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.ariv.remind.model.Problem;
 import com.ariv.remind.model.ProblemDto;
+import com.ariv.remind.model.ProblemSenderInfo;
 import com.ariv.remind.repository.ProblemRepository;
+import com.ariv.remind.security.SecurityUtils;
+import com.ariv.remind.security.repository.UserRepository;
 import com.ariv.remind.service.ProblemService;
 
 /**
@@ -32,6 +30,8 @@ public class ProblemServiceImpl implements ProblemService {
 	final ProblemRepository problemRepository;
 	@Autowired
 	SpacedReminderService spacedService;
+	@Autowired
+	private UserRepository userRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
 
 	/**
@@ -43,6 +43,9 @@ public class ProblemServiceImpl implements ProblemService {
 
 	@Override
 	public Boolean saveProblem(Problem problem) {
+
+		problem.setUser(
+				userRepository.findOneWithAuthoritiesByEmailIgnoreCase(SecurityUtils.getCurrentUsername().get()).get());
 		Problem resultProblem = problemRepository.save(constructProblem(problem));
 		if (!spacedService.saveProblemInReminder(resultProblem)) {
 			throw new IllegalArgumentException("Problem cannot be inserted into the spaced_reminder table");
