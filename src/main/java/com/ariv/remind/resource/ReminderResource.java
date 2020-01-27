@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ariv.remind.model.PreviousFeedback;
 import com.ariv.remind.model.Problem;
 import com.ariv.remind.model.ProblemDto;
 import com.ariv.remind.model.ProblemSenderInfo;
@@ -72,6 +73,12 @@ public class ReminderResource {
 	public ResponseData getAllProblemReminders() {
 		List<SpacedReminder> problems = spacedReminderService.findAll();
 		return new ResponseData(true, problems, "Success");
+	}
+	
+	@GetMapping("/previousFeedback/{id}")
+	public ResponseData getAllPreviousFeedback(@PathVariable Integer id) {
+		List<PreviousFeedback> feedbacks = spacedReminderService.findByIdAndProblem(id);
+		return new ResponseData(true, feedbacks, "Success");
 	}
 	
 	@GetMapping("/{id}")
