@@ -49,7 +49,7 @@ public class AuthenticationRestController {
       HttpHeaders httpHeaders = new HttpHeaders();
       httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-      return new ResponseData(true, new JWTToken(jwt), "Success");
+      return new ResponseData(true, jwt, "Success");
    }
 
    /**

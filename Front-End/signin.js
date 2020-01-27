@@ -34,6 +34,7 @@ function onSignIn(e) {
 	    console.log("done in submit function");
 	    console.log(data);
 		showSuccessToast();
+		localStorage.setItem('token', data.data);
 		$("#username").val("");
 		$("#password").val("");
 		$("#rememberMe").val("");
