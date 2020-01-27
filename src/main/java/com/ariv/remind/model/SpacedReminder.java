@@ -3,10 +3,14 @@
  */
 package com.ariv.remind.model;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author zakir
@@ -19,11 +23,13 @@ public class SpacedReminder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String problemNumber;
-
 	private LocalDate date;
 
 	private Boolean isRevised;
+
+	@ManyToOne
+	@JoinColumn(name = "problem_id", nullable = false)
+	private Problem problem;
 
 	public Integer getId() {
 		return id;
@@ -33,12 +39,12 @@ public class SpacedReminder {
 		this.id = id;
 	}
 
-	public String getProblemNumber() {
-		return problemNumber;
+	public Problem getProblem() {
+		return problem;
 	}
 
-	public void setProblemNumber(String problemNumber) {
-		this.problemNumber = problemNumber;
+	public void setProblem(Problem problem) {
+		this.problem = problem;
 	}
 
 	public LocalDate getDate() {

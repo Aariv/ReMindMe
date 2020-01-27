@@ -4,9 +4,14 @@
 package com.ariv.remind.model;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * @author al
@@ -20,17 +25,17 @@ public class Problem {
 	@GeneratedValue
 	private Integer id;
 
+	@Column(unique = true)
 	private String name;
 
-	@Column(unique = true)
-	private String number;
-
-	private ProblemType type;
+	private String referenceLink;
 
 	private String feedback;
 
 	private LocalDate date;
 
+	@OneToMany(mappedBy = "problem")
+	private Set<SpacedReminder> spacedReminders;
 
 	/**
 	 * 
@@ -46,27 +51,12 @@ public class Problem {
 	 * @param feedback
 	 * @param date
 	 */
-	public Problem(String name, String number, ProblemType type, String feedback, LocalDate date) {
+	public Problem(String name, String referenceLink, String feedback, LocalDate date) {
 		super();
 		this.name = name;
-		this.number = number;
-		this.type = type;
+		this.referenceLink = referenceLink;
 		this.feedback = feedback;
 		this.date = date;
-	}
-	
-	/**
-	 * @param name
-	 * @param number
-	 * @param type
-	 * @param feedback
-	 */
-	public Problem(String name, String number, ProblemType type, String feedback) {
-		super();
-		this.name = name;
-		this.number = number;
-		this.type = type;
-		this.feedback = feedback;
 	}
 
 	/**
@@ -77,7 +67,8 @@ public class Problem {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -91,7 +82,8 @@ public class Problem {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -100,29 +92,16 @@ public class Problem {
 	/**
 	 * @return the number
 	 */
-	public String getNumber() {
-		return number;
+	public String getReferenceLink() {
+		return referenceLink;
 	}
 
 	/**
-	 * @param number the number to set
+	 * @param number
+	 *            the number to set
 	 */
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public ProblemType getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(ProblemType type) {
-		this.type = type;
+	public void setReferenceLink(String number) {
+		this.referenceLink = number;
 	}
 
 	/**
@@ -133,7 +112,8 @@ public class Problem {
 	}
 
 	/**
-	 * @param feedback the feedback to set
+	 * @param feedback
+	 *            the feedback to set
 	 */
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
@@ -147,10 +127,26 @@ public class Problem {
 	}
 
 	/**
-	 * @param date the date to set
+	 * @param date
+	 *            the date to set
 	 */
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	/**
+	 * @return the spacedReminders
+	 */
+	public Set<SpacedReminder> getSpacedReminders() {
+		return spacedReminders;
+	}
+
+	/**
+	 * @param spacedReminders
+	 *            the spacedReminders to set
+	 */
+	public void setSpacedReminders(Set<SpacedReminder> spacedReminders) {
+		this.spacedReminders = spacedReminders;
 	}
 
 }
