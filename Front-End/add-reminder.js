@@ -1,5 +1,5 @@
 
-function onSubmit() {
+function onSubmit(e) {
 	var name = $("#name").val();
 	var referenceLink = $("#referenceLink").val();
 	var feedback = $("#feedback").val();

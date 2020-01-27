@@ -3,12 +3,10 @@
  */
 package com.ariv.remind.service;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import com.ariv.remind.model.Problem;
-import com.ariv.remind.model.ProblemSenderInfo;
+import com.ariv.remind.model.ProblemDto;
 
 /**
  * @author al
@@ -20,4 +18,5 @@ public interface ProblemService {
 
 	public List<Problem> problems();
 	
+	public ProblemDto getProblem(Integer id);
 }

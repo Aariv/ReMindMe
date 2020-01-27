@@ -31,6 +31,8 @@ public class SpacedReminder {
 	@JoinColumn(name = "problem_id", nullable = false)
 	private Problem problem;
 
+	private String reminderFeedback;
+
 	public Integer getId() {
 		return id;
 	}
@@ -62,4 +64,35 @@ public class SpacedReminder {
 	public void setRevised(Boolean revised) {
 		isRevised = revised;
 	}
+
+	/**
+	 * @return the isRevised
+	 */
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	/**
+	 * @param isRevised
+	 *            the isRevised to set
+	 */
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+
+	/**
+	 * @return the reminderFeedback
+	 */
+	public String getReminderFeedback() {
+		return reminderFeedback;
+	}
+
+	/**
+	 * @param reminderFeedback
+	 *            the reminderFeedback to set
+	 */
+	public void setReminderFeedback(String reminderFeedback) {
+		this.reminderFeedback = reminderFeedback;
+	}
+
 }

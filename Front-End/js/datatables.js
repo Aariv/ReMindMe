@@ -522,8 +522,38 @@ $(document).ready(function() {
 
 
     $('#simpletable').DataTable({
-	
+
     });
+
+	$('#simpletable').dataTable( {
+		"processing": true,
+		"serverSide": true,
+		"ajaxSource": "http://localhost:3030/v1/reminders"
+		"columns": [
+		   { "data": "#" },
+		   { "data": "problem" },
+		   { "data": "referenceLink"},
+		   { "data": "feedback" },
+		   /*Note that data == true instead of ===, if you have 1 or 0 it isn't ===
+		   (strictly equal) to true but it is == (evaluates to equal) to true*/
+		   { "data": "problem",
+		     "render": function (data, type, row) {
+		                  return (data === true) ? '<span class="glyphicon glyphicon-ok">
+		                  </span>' : '<span class="glyphicon glyphicon-remove"></span>';}
+		   },
+		   { "data": "referenceLink",
+		     "render": function (data, type, row) {
+		                  return (data == true) ? '<span class="glyphicon glyphicon-ok">
+		                  </span>' : '<span class="glyphicon glyphicon-remove"></span>';}
+		   },
+		   { "data": "feedback",
+		     "render": function (data, type, row) {
+		                  return (data == true) ? '<span class="glyphicon glyphicon-ok">
+		                  </span>' : '<span class="glyphicon glyphicon-remove"></span>';}
+		   },
+		   { "data": "duration" }
+	       ]
+	    } );
 
     $('#order-table').DataTable({
         "order": [

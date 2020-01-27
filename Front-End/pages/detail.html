@@ -17,46 +17,80 @@
         <link rel="stylesheet" href="../plugins/ionicons/dist/css/ionicons.min.css">
         <link rel="stylesheet" href="../plugins/icon-kit/dist/css/iconkit.min.css">
         <link rel="stylesheet" href="../plugins/perfect-scrollbar/css/perfect-scrollbar.css">
-        <link rel="stylesheet" href="../plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="../plugins/jquery-toast-plugin/dist/jquery.toast.min.css">
         <link rel="stylesheet" href="../dist/css/theme.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="../src/js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="../list-reminder.js"></script>
-
+        <script src="../add-reminder.js"></script>
         <script type="text/javascript">
-            function gotoDetailPage(id) {
-                console.log("detail page");
-                console.log(id);
-                window.location.href = "detail.html?id=" +id;
+            function onSubmitRevision() {
+                var id = $("#problemId").val();
+                var revised = $("#revised").val();
+                var feedback = $("#feedback").val();
+                //console.log(name);
+                if(revised === '') {
+                    showAddInfoToast();
+                    //$("#feedback").val("");
+                    return;
+                } else if(feedback === '') {
+                    showAddInfoToast();
+                    //$("#referenceLink").val("");
+                    return;
+                }
+                var reminderFeedback = {
+                        id: parseInt(id),
+                        revised: (revised == 'on'),
+                        feedback: feedback
+                }
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: 'http://localhost:3030/v1/reminders/revisedReminder',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(reminderFeedback)
+                    
+                }).done(function (data) {
+                    console.log("done in submit function");
+                    showSuccessToast();
+                    window.href.location = "pages/table-datatable.html";
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                   console.log("error in submit function");
+                   var status = jqXHR.status;
+                   if(status === 500) {
+                    console.log(status);
+                    showInteralDangerToast();
+                   } else {
+                    showDangerToast();
+                   }
+                   console.log(status);
+                });
             }
             $(document).ready(function() {
-                //anything in here will only be called/work when the document is ready.
+                const queryString = window.location.search;
+                //console.log(queryString);
+                const urlParams = new URLSearchParams(queryString);
+                const id = urlParams.get('id');
+                console.log(id);
 
-             //call your function in here, instead of bodyonload
-             $.ajax({
-                url: "http://localhost:3030/v1/reminders"
-                }).then(function(data) {
-                    var data = data.data;
-                    var count = 1;
-                    for(var i = 0; i < data.length; i++) {
-                        var record = data[i];
-                        var row = '<tr onclick="gotoDetailPage('+record.problemId+')">' +
-                            '<td>'+ count++ +'</td>' +
-                            '<td>'+ record.problem +'</td>' +
-                            '<td>'+ record.referenceLink +'</td>' +
-                            '</tr>';
-                        $("#reminders tbody").append(row);
-                    }
-                }).done(function (data) {
-                    //selectText('Id', data.country);
-                    console.log("done function in init");
+                $.ajax({
+                    url: "http://localhost:3030/v1/reminders/spacedReminders/" + id
+                    }).then(function(data) {
+                        var problem = data.data;
+                        console.log(problem);
+                        $('#problemId').val(problem.problemId);
+                        $('#problem').val(problem.problem);
+                        $('#referenceLink').val(problem.referenceLink);
+                        //$('#feedback').val(problem.feedback);
+                    }).done(function (data) {
+                        //selectText('Id', data.country);
+                        console.log("done function in init");
 
-                    //init();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    //var defaultOption = 'US'
-                    //selectDropdownByText('Id', defaultOption);
-                    //alert("Server is not reachable.")
-                    console.log(errorThrown);
+                        //init();
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        //var defaultOption = 'US'
+                        //selectDropdownByText('Id', defaultOption);
+                        //alert("Server is not reachable.")
+                        console.log(errorThrown);
                 });
             });
         </script>
@@ -171,17 +205,22 @@
                     <div class="sidebar-content">
                         <div class="nav-container">
                             <nav id="main-menu-navigation" class="navigation-main">
-                                <div class="nav-item">
-                                    <a href="../dashboard.html"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
-                                </div>
+                                <nav id="main-menu-navigation" class="navigation-main">
                                 
-                                <div class="nav-item">
-                                    <a href="form-components.html"><i class="ik ik-edit"></i><span>Add Reminders</span></a>
-                                </div>
-                               
-                                <div class="nav-item active">
-                                    <a href="table-datatable.html"><i class="ik ik-inbox"></i><span>Today's Reminders</span></a>
-                                </div>
+                                    <div class="nav-item">
+                                        <a href="../dashboard.html"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                                    </div>
+                                    
+                                    <div class="nav-item">
+                                        <a href="#"><i class="ik ik-edit"></i><span>Add Reminders</span></a>
+                                    </div>
+                                   
+                                    <div class="nav-item">
+                                        <a href="table-datatable.html"><i class="ik ik-inbox"></i><span>Today's Reminders</span></a>
+                                    </div>
+
+                                
+                                </nav>
                             </nav>
                         </div>
                     </div>
@@ -192,10 +231,10 @@
                             <div class="row align-items-end">
                                 <div class="col-lg-8">
                                     <div class="page-header-title">
-                                        <i class="ik ik-inbox bg-blue"></i>
+                                        <i class="ik ik-edit bg-blue"></i>
                                         <div class="d-inline">
-                                            <h5>Todays' Reminders</h5>
-                                            <span>You are supposed to revise these items today</span>
+                                            <h5>Revise Reminder</h5>
+                                            <span>Update what you have learned today</span>
                                         </div>
                                     </div>
                                 </div>
@@ -206,37 +245,62 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-md-6">
                                 <div class="card">
-                                    <div class="card-header d-block">
-                                        <h3>Items to be revised</h3>
-                                    </div>
+                                    <div class="card-header"><h3>ReMind</h3></div>
                                     <div class="card-body">
-                                        <div class="dt-responsive">
-                                            <table class="table table-hover" id="reminders" onload="listReminders()"">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Reminder</th>
-                                                        <th>Reference Link</th>
-                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    
-                                                </tbody>
-                                            </table>
+                                        <form class="forms-sample" id="reminder">
+                                            <div id="problemId" hidden="true">problemId</div>
+                                            <div class="form-group">
+                                                <label for="exampleInputUsername1">Problem Name</label>
+                                                <input type="text" id="problem" readonly="true" value="" />
+                                            </div>
+                                             <div class="form-group">
+                                                <label for="exampleInputUsername1">Reference Link</label>
+                                                <input type="text" id="referenceLink" readonly="true" value="" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputUsername1">Revised</label>
+                    
+                                                <input class="border-checkbox" type="checkbox" id="revised">
+                                               
+                                            </div>
+
+                                            
+                                            <div class="form-group">
+                                                <label for="exampleTextarea1">Reminder Feedback</label>
+                                                <textarea class="form-control" id="feedback" rows="2"></textarea>
+                                            </div>
+                                            
+                                            <button onclick="onSubmitRevision();" type="button" class="btn btn-primary mr-2">Submit</button>
+                                            <button class="btn btn-light">Cancel</button>
+                                          </form>
+                                    </div>
+                                    <div>
+                                        <div id="message"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header"><h3>Previous Feedback</h3></div>
+                                    <div class="card-body">
+                                        <div>
+                                            Feedback 1    
+                                        </div>
+                                        
+                                        <div>
+                                            Feedback 2
                                         </div>
                                     </div>
+                                    <div>
+                                        <div id="message"></div>
+                                    </div>
                                 </div>
-                                
-                                
-                            
-                                
-                                </div>
-                                <!-- Language - Comma Decimal Place table end -->
                             </div>
-                        </div>
+
                     </div>
                 </div>
                 <aside class="right-sidebar">
@@ -250,7 +314,45 @@
                                 </div>
                             </form>
                         </div>
-                        
+                        <div class="chat-list">
+                            <div class="list-group row">
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Gene Newman">
+                                    <figure class="user--online">
+                                        <img src="../img/users/1.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Gene Newman</span>  <span class="username">@gene_newman</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Billy Black">
+                                    <figure class="user--online">
+                                        <img src="../img/users/2.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Billy Black</span>  <span class="username">@billyblack</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Herbert Diaz">
+                                    <figure class="user--online">
+                                        <img src="../img/users/3.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Herbert Diaz</span>  <span class="username">@herbert</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Sylvia Harvey">
+                                    <figure class="user--busy">
+                                        <img src="../img/users/4.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Sylvia Harvey</span>  <span class="username">@sylvia</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item active" data-chat-user="Marsha Hoffman">
+                                    <figure class="user--busy">
+                                        <img src="../img/users/5.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Marsha Hoffman</span>  <span class="username">@m_hoffman</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Mason Grant">
+                                    <figure class="user--offline">
+                                        <img src="../img/users/1.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Mason Grant</span>  <span class="username">@masongrant</span> </span>
+                                </a>
+                                <a href="javascript:void(0)" class="list-group-item" data-chat-user="Shelly Sullivan">
+                                    <figure class="user--offline">
+                                        <img src="../img/users/2.jpg" class="rounded-circle" alt="">
+                                    </figure><span><span class="name">Shelly Sullivan</span>  <span class="username">@shelly</span></span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </aside>
 
@@ -430,11 +532,10 @@
         <script src="../plugins/popper.js/dist/umd/popper.min.js"></script>
         <script src="../plugins/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="../plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
-        <script src="../plugins/screenfull/dist/screenfull.js"></script>
-        <script src="../plugins/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="../plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="../dist/js/theme.min.js"></script>
-        <script src="../js/datatables.js"></script>
+        <script src="../js/form-components.js"></script>
+        <script src="../plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+        <script src="../js/alerts.js"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

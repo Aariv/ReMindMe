@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ariv.remind.model.Problem;
+import com.ariv.remind.model.ProblemDto;
 import com.ariv.remind.repository.ProblemRepository;
 import com.ariv.remind.service.ProblemService;
 
@@ -39,7 +40,7 @@ public class ProblemServiceImpl implements ProblemService {
 	@Override
 	public Boolean saveProblem(Problem problem) {
 		Problem resultProblem = problemRepository.save(constructProblem(problem));
-		if(!spacedService.saveProblemInReminder(resultProblem)){
+		if (!spacedService.saveProblemInReminder(resultProblem)) {
 			throw new IllegalArgumentException("Problem cannot be inserted into the spaced_reminder table");
 		}
 		return Boolean.TRUE;
@@ -57,6 +58,13 @@ public class ProblemServiceImpl implements ProblemService {
 	@Override
 	public List<Problem> problems() {
 		return problemRepository.findAll();
+	}
+
+	@Override
+	public ProblemDto getProblem(Integer id) {
+		Problem problem = problemRepository.getOne(id);
+		ProblemDto problemDto = new ProblemDto(problem.getName(), problem.getReferenceLink(), problem.getFeedback());
+		return problemDto;
 	}
 
 }
