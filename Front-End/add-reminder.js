@@ -18,11 +18,13 @@ function onSubmit(e) {
 	    	referenceLink: referenceLink,
 	    	feedback: feedback
 	}
+		var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
+        var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
 	    $.ajax({
 	        type: "POST",
-		contentType: "application/json; charset=utf-8",
 	        url: 'http://localhost:3030/v1/reminders',
 	        contentType: "application/json; charset=utf-8",
+	        headers: {"Authorization": 'Bearer ' + token}
 	        data: JSON.stringify(problem)
 	        
 	    }).done(function (data) {

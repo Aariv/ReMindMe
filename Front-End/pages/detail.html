@@ -23,6 +23,8 @@
         <script src="../src/js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="../add-reminder.js"></script>
         <script type="text/javascript">
+            var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
+            var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
             function onSubmitRevision() {
                 var id = $("#problemId").val();
                 var revised = $("#revised").val();
@@ -44,7 +46,7 @@
                 }
                 $.ajax({
                     type: "POST",
-                    contentType: "application/json; charset=utf-8",
+                    headers: {"Authorization": 'Bearer ' + token},
                     url: 'http://localhost:3030/v1/reminders/revisedReminder',
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(reminderFeedback)
@@ -73,7 +75,8 @@
                 console.log(id);
 
                 $.ajax({
-                    url: "http://localhost:3030/v1/reminders/spacedReminders/" + id
+                    url: "http://localhost:3030/v1/reminders/spacedReminders/" + id,
+                    headers: {"Authorization": 'Bearer ' + token}
                     }).then(function(data) {
                         var problem = data.data;
                         console.log(problem);
@@ -94,7 +97,8 @@
                 });
 
                 $.ajax({
-                    url: "http://localhost:3030/v1/reminders/previousFeedback/" + id
+                    url: "http://localhost:3030/v1/reminders/previousFeedback/" + id,
+                    headers: {"Authorization": 'Bearer ' + token}
                 }).then(function(data) {
                     var records = data.data;
                     var count = 1;
