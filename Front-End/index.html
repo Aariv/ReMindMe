@@ -43,17 +43,17 @@
                             <p>Happy to see you again!</p>
                             <form action="dashboard.html">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Email" required="" value="zakir@remind.com">
+                                    <input type="text" id="username" class="form-control" placeholder="Email" required="true" value="">
                                     <i class="ik ik-user"></i>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Password" required="" value="123456">
+                                    <input type="password" id="password" class="form-control" placeholder="Password" required="true" value="">
                                     <i class="ik ik-lock"></i>
                                 </div>
                                 <div class="row">
                                     <div class="col text-left">
                                         <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox" value="option1">
+                                            <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox">
                                             <span class="custom-control-label">&nbsp;Remember Me</span>
                                         </label>
                                     </div>
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="sign-btn text-center">
-                                    <button class="btn btn-theme">Sign In</button>
+                                    <button id="signIn" class="btn btn-theme" onclick="onSignIn()">Sign In</button>
                                 </div>
                             </form>
                             <div class="register">
@@ -77,6 +77,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script>window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
         <script src="plugins/popper.js/dist/umd/popper.min.js"></script>
+        <script src="signin.js"></script>
+        
         <script src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
         <script src="plugins/screenfull/dist/screenfull.js"></script>
