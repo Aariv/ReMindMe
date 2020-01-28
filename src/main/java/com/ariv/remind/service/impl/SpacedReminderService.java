@@ -58,7 +58,7 @@ public class SpacedReminderService {
 		LocalDate problemCompletionDate = problem.getDate();
 		int range = 12;
 		int numberOne = 1;
-		int numberTwo = 2;
+		int numberTwo = 1;
 		for (int i = 1; i <= range; i++) {
 			SpacedReminder spacedReminder = new SpacedReminder();
 			int sum = numberOne + numberTwo;
