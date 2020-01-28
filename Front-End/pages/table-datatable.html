@@ -29,38 +29,7 @@
                 console.log(id);
                 window.location.href = "detail.html?id=" +id;
             }
-            $(document).ready(function() {
-                //anything in here will only be called/work when the document is ready.
-                var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
-                var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
-             //call your function in here, instead of bodyonload
-                $.ajax({
-                    url: "http://localhost:3030/v1/reminders",
-                    headers: {"Authorization": 'Bearer ' + token}
-                }).then(function(data) {
-                    var data = data.data;
-                    var count = 1;
-                    for(var i = 0; i < data.length; i++) {
-                        var record = data[i];
-                        var row = '<tr onclick="gotoDetailPage('+record.problemId+')">' +
-                            '<td>'+ count++ +'</td>' +
-                            '<td>'+ record.problem +'</td>' +
-                            '<td>'+ record.referenceLink +'</td>' +
-                            '</tr>';
-                        $("#reminders tbody").append(row);
-                    }
-                }).done(function (data) {
-                    //selectText('Id', data.country);
-                    console.log("done function in init");
-
-                    //init();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    //var defaultOption = 'US'
-                    //selectDropdownByText('Id', defaultOption);
-                    //alert("Server is not reachable.")
-                    console.log(errorThrown);
-                });
-            });
+            
         </script>
     </head>
 
@@ -147,7 +116,7 @@
                                     <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i> Settings</a>
                                     <a class="dropdown-item" href="#"><span class="float-right"><span class="badge badge-primary">6</span></span><i class="ik ik-mail dropdown-icon"></i> Inbox</a>
                                     <a class="dropdown-item" href="#"><i class="ik ik-navigation dropdown-icon"></i> Message</a>
-                                    <a class="dropdown-item" href="login.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
+                                    <a class="dropdown-item" href="../index.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
                                 </div>
                             </div>
 
@@ -441,6 +410,7 @@
         <script src="../plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="../dist/js/theme.min.js"></script>
         <script src="../js/datatables.js"></script>
+        <script src="../front-end-api.js"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

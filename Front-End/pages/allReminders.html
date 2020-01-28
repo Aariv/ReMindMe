@@ -21,43 +21,9 @@
         <link rel="stylesheet" href="../dist/css/theme.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="../src/js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="../list-reminder.js"></script>
-
+       
         <script type="text/javascript">
-            var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
-            var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
-            $(document).ready(function() {
-                //anything in here will only be called/work when the document is ready.
-
-             //call your function in here, instead of bodyonload
-             $.ajax({
-                url: "http://localhost:3030/v1/reminders/allConcepts",
-                headers: {"Authorization": 'Bearer ' + token}
-                }).then(function(data) {
-                    var data = data.data;
-                    var count = 1;
-                    for(var i = 0; i < data.length; i++) {
-                        var record = data[i];
-                        var row = '<tr>' +
-                            '<td>'+ count++ +'</td>' +
-                            '<td>'+ record.problem +'</td>' +
-                            '<td><a target="_blank" href='+record.referenceLink+'>'+record.referenceLink+'</td>' +
-                            '<td>'+ record.date +'</td>' +
-                            '</tr>';
-                        $("#reminders tbody").append(row);
-                    }
-                }).done(function (data) {
-                    //selectText('Id', data.country);
-                    console.log("done function in init");
-
-                    //init();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    //var defaultOption = 'US'
-                    //selectDropdownByText('Id', defaultOption);
-                    //alert("Server is not reachable.")
-                    console.log(errorThrown);
-                });
-            });
+            
         </script>
     </head>
 
@@ -216,7 +182,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="dt-responsive">
-                                            <table class="table table-hover" id="reminders" onload="listReminders()">
+                                            <table class="table table-hover" id="allReminders">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -439,6 +405,7 @@
         <script src="../plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="../dist/js/theme.min.js"></script>
         <script src="../js/datatables.js"></script>
+        <script src="../front-end-api.js"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

@@ -23,51 +23,15 @@
         <script src="../src/js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="../add-reminder.js"></script>
         <script type="text/javascript">
-            var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
-            var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
-            function onSubmitRevision() {
-                var id = $("#problemId").val();
-                var revised = $("#revised").val();
-                var feedback = $("#feedback").val();
-                //console.log(name);
-                if(revised === '') {
-                    showAddInfoToast();
-                    //$("#feedback").val("");
-                    return;
-                } else if(feedback === '') {
-                    showAddInfoToast();
-                    //$("#referenceLink").val("");
-                    return;
-                }
-                var reminderFeedback = {
-                        id: parseInt(id),
-                        revised: (revised == 'on'),
-                        feedback: feedback
-                }
-                $.ajax({
-                    type: "POST",
-                    headers: {"Authorization": 'Bearer ' + token},
-                    url: 'http://localhost:3030/v1/reminders/revisedReminder',
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(reminderFeedback)
-                    
-                }).done(function (data) {
-                    console.log("done in submit function");
-                    showSuccessToast();
-                    window.href.location = "pages/table-datatable.html";
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                   console.log("error in submit function");
-                   var status = jqXHR.status;
-                   if(status === 500) {
-                    console.log(status);
-                    showInteralDangerToast();
-                   } else {
-                    showDangerToast();
-                   }
-                   console.log(status);
-                });
-            }
+            
             $(document).ready(function() {
+                var myMap = new Map(); 
+                myMap.set('local', 'http://localhost:3030/v1/reminders');
+                myMap.set('server', 'http://ec2-54-91-228-178.compute-1.amazonaws.com:3030/v1/reminders');
+
+                var server = true;
+
+                var instance = (server) ? myMap.get('server') : myMap.get('local');
                 const queryString = window.location.search;
                 //console.log(queryString);
                 const urlParams = new URLSearchParams(queryString);
@@ -75,7 +39,7 @@
                 console.log(id);
 
                 $.ajax({
-                    url: "http://localhost:3030/v1/reminders/spacedReminders/" + id,
+                    url: instance + "/previousFeedback/" + id,
                     headers: {"Authorization": 'Bearer ' + token}
                     }).then(function(data) {
                         var problem = data.data;
@@ -94,33 +58,6 @@
                         //selectDropdownByText('Id', defaultOption);
                         //alert("Server is not reachable.")
                         console.log(errorThrown);
-                });
-
-                $.ajax({
-                    url: "http://localhost:3030/v1/reminders/previousFeedback/" + id,
-                    headers: {"Authorization": 'Bearer ' + token}
-                }).then(function(data) {
-                    var records = data.data;
-                    var count = 1;
-                    for(var i = 0; i < records.length; i++) {
-                        var record = records[i];
-                        var rowDiv = '<tr>' +
-                            '<td>'+ count++ +'</td>' +
-                            '<td>'+ record.feedback +'</td>' +
-                            '</tr>';
-                        $("#previousFeedback tbody").append(rowDiv);
-                    }
-                    //$('#feedback').val(problem.feedback);
-                }).done(function (data) {
-                    //selectText('Id', data.country);
-                    console.log("done function in init");
-
-                    //init();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    //var defaultOption = 'US'
-                    //selectDropdownByText('Id', defaultOption);
-                    //alert("Server is not reachable.")
-                    console.log(errorThrown);
                 });
             });
         </script>
@@ -209,7 +146,7 @@
                                     <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i> Settings</a>
                                     <a class="dropdown-item" href="#"><span class="float-right"><span class="badge badge-primary">6</span></span><i class="ik ik-mail dropdown-icon"></i> Inbox</a>
                                     <a class="dropdown-item" href="#"><i class="ik ik-navigation dropdown-icon"></i> Message</a>
-                                    <a class="dropdown-item" href="login.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
+                                    <a class="dropdown-item" href="../index.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
                                 </div>
                             </div>
 
@@ -306,7 +243,7 @@
                                                 <textarea class="form-control" id="feedback" rows="2"></textarea>
                                             </div>
                                             
-                                            <button onclick="onSubmitRevision();" type="button" class="btn btn-primary mr-2">Submit</button>
+                                            <button id="addDetail" type="button" class="btn btn-primary mr-2">Submit</button>
                                             <button class="btn btn-light">Cancel</button>
                                           </form>
                                     </div>
@@ -576,6 +513,7 @@
         <script src="../js/form-components.js"></script>
         <script src="../plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
         <script src="../js/alerts.js"></script>
+        <script src="../front-end-api.js"></script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

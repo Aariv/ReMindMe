@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="../plugins/jquery-toast-plugin/dist/jquery.toast.min.css">
         <link rel="stylesheet" href="../dist/css/theme.min.css">
         <script src="../src/js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="../add-reminder.js"></script>
+        
     </head>
 
     <body>
@@ -106,7 +106,7 @@
                                     <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i> Settings</a>
                                     <a class="dropdown-item" href="#"><span class="float-right"><span class="badge badge-primary">6</span></span><i class="ik ik-mail dropdown-icon"></i> Inbox</a>
                                     <a class="dropdown-item" href="#"><i class="ik ik-navigation dropdown-icon"></i> Message</a>
-                                    <a class="dropdown-item" href="login.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
+                                    <a class="dropdown-item" href="../index.html"><i class="ik ik-power dropdown-icon"></i> Logout</a>
                                 </div>
                             </div>
 
@@ -437,58 +437,8 @@
         <script src="../js/form-components.js"></script>
         <script src="../plugins/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
         <script src="../js/alerts.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $( "#addReminder" ).click(function(e) {
-                    e.preventDefault();
-                    var name = $("#name").val();
-                    var referenceLink = $("#referenceLink").val();
-                    var feedback = $("#feedback").val();
-                    //console.log(name);
-                    if(name === '') {
-                        showAddInfoToast();
-                        $("#name").val("");
-                        return;
-                    } else if(referenceLink === '') {
-                        showAddInfoToast();
-                        $("#referenceLink").val("");
-                        return;
-                    }
-                    var problem = {
-                            name: name,
-                            referenceLink: referenceLink,
-                            feedback: feedback
-                    }
-                        var dummyToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcml2QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1ODAyMTc1MDN9.NZtX_Ipw6sUxymBq7KH2PQURE1yAXKN0U9pyHFT-3BHo49mPdUxHFZc-FkOYBeFpfynNO48p0w6MLhMxOfauTw';
-                        var token = localStorage.getItem('token') != null ? localStorage.getItem('token') : dummyToken;
-                        $.ajax({
-                            type: "POST",
-                            url: 'http://localhost:3030/v1/reminders',
-                            contentType: "application/json; charset=utf-8",
-                            headers: {"Authorization": 'Bearer ' + token},
-                            data: JSON.stringify(problem)
-                            
-                        }).done(function (data) {
-                            console.log("done in submit function");
-                        showSuccessToast();
-                        $("#name").val("");
-                        $("#referenceLink").val("");
-                        $("#feedback").val("");
-                        }).fail(function (jqXHR, textStatus, errorThrown) {
-                           console.log("error in submit function");
-                           var status = jqXHR.status;
-                           if(status === 500) {
-                            console.log(status);
-                            showInteralDangerToast();
-                           } else {
-                            showDangerToast();
-                           }
-                           console.log(status);
-                        });
-                });
-            });
+        <script src="../front-end-api.js"></script>
         
-        </script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

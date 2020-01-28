@@ -83,44 +83,8 @@
         <script src="plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
         <script src="plugins/screenfull/dist/screenfull.js"></script>
         <script src="dist/js/theme.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $( "#signIn" ).click(function(e) {
-                    e.preventDefault();
-                    var username = $("#username").val();
-                    var password = $("#password").val();
-                    var rememberMe = $("#item_checkbox").val();
-                    //console.log(name);
-                    /*if(username === '') {
-                        showAddInfoToast();
-                        return;
-                    } else if(password === '') {
-                        showAddInfoToast();
-                        return;
-                    }*/
-                    var loginDto = {
-                            username: username != '' ? username : 'ariv@gmail.com',
-                            password: password != '' ? password : 'ariv@123'
-                            //rememberMe: feedback
-                    }
-                    $.ajax({
-                          contentType: "application/json; charset=utf-8",
-                          data: JSON.stringify(loginDto),
-                          timeout: 1000,
-                          type: 'POST',
-                          url: 'http://localhost:3030/v1/api/authenticate'
-                    }).done(function(data, textStatus, jqXHR) {
-                        console.log(data.data);
-
-                      localStorage.setItem('token', data.data);
-                      window.location = 'dashboard.html';
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                      alert('Booh! Wrong credentials, try again!');
-                    });
-                });
-            });
+        <script src="front-end-api.js"></script>
         
-        </script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

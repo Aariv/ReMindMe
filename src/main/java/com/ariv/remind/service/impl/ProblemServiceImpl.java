@@ -32,6 +32,10 @@ public class ProblemServiceImpl implements ProblemService {
 	SpacedReminderService spacedService;
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private SecurityUtils securityUtils;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpacedReminderService.class);
 
 	/**
@@ -77,7 +81,7 @@ public class ProblemServiceImpl implements ProblemService {
 	@Override
 	public List<ProblemSenderInfo> findAll() {
 		List<ProblemSenderInfo> problemSenderInfoList = new ArrayList<>();
-		List<Problem> problemList = problemRepository.findAll();
+		List<Problem> problemList = problemRepository.findAllByUser(securityUtils.getCurrentUser().get());
 		if (problemList.isEmpty()) {
 			LOGGER.debug("Reminder List is not present....Please check....");
 			return problemSenderInfoList;
