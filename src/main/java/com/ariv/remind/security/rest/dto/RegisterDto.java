@@ -13,11 +13,9 @@ public class RegisterDto {
 	private String email;
 
 	@NotNull
-	@Size(min = 4, max = 100)
 	private String password;
 
 	@NotNull
-	@Size(min = 4, max = 100)
 	private String confirmPassword;
 
 	/**

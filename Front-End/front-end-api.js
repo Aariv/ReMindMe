@@ -6,7 +6,7 @@ myMap.set('serverLogin', 'http://ec2-54-91-228-178.compute-1.amazonaws.com:3030/
 myMap.set('localRegister', 'http://localhost:3030/v1/api/register');
 myMap.set('serverRegister', 'http://ec2-54-91-228-178.compute-1.amazonaws.com:3030/v1/api/register');
 
-var server = true;
+var server = false;
 
 var instance = (server) ? myMap.get('server') : myMap.get('local');
 var authInstance = (server) ? myMap.get('serverLogin') : myMap.get('localLogin');
@@ -139,6 +139,10 @@ $(document).ready(function() {
                console.log(status);
             });
 		});
+
+        $('#logout').click(function(e) {
+            localStorage.setItem('token', '');
+        });
 
 		$( "#addReminder" ).click(function(e) {
                 e.preventDefault();
