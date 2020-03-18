@@ -29,7 +29,7 @@
                 myMap.set('local', 'http://localhost:3030/v1/reminders');
                 myMap.set('server', 'http://ec2-54-91-228-178.compute-1.amazonaws.com:3030/v1/reminders');
 
-                var server = true;
+                var server = false;
 
                 var instance = (server) ? myMap.get('server') : myMap.get('local');
                 const queryString = window.location.search;
@@ -42,12 +42,26 @@
                     url: instance + "/previousFeedback/" + id,
                     headers: {"Authorization": 'Bearer ' + token}
                     }).then(function(data) {
-                        var problem = data.data;
+                        var problem = data.data.problem;
                         console.log(problem);
-                        $('#problemId').val(problem.problemId);
-                        $('#problem').val(problem.problem);
+                        $('#problemId').val(problem.id);
+                        $('#problem').val(problem.name);
                         $('#referenceLink').val(problem.referenceLink);
                         //$('#feedback').val(problem.feedback);
+                        
+                        // load previous feedback
+                        if(data.data.previousFeedbacks != null) {
+                        	var count = 1;
+    			            for(var i = 0; i < data.data.previousFeedbacks.length; i++) {
+    			                var record = data[i];
+    			                var row = '<tr>' +
+    			                    '<td>'+ count++ +'</td>' +
+    			                    '<td>'+ record.feedback +'</td>' +
+    			                    '</tr>';
+    			                $("#previousFeedback tbody").append(row);
+    			            }
+                        }
+                        
                     }).done(function (data) {
                         //selectText('Id', data.country);
                         console.log("done function in init");

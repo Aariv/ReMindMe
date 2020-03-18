@@ -52,6 +52,22 @@ public class Problem {
 	public Problem() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	/**
+	 * @param name
+	 * @param number
+	 * @param type
+	 * @param feedback
+	 * @param date
+	 */
+	public Problem(Integer id, String name, String referenceLink, String feedback, LocalDate date) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.referenceLink = referenceLink;
+		this.feedback = feedback;
+		this.date = date;
+	}
 
 	/**
 	 * @param name

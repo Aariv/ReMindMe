@@ -119,7 +119,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 headers: {"Authorization": 'Bearer ' + token},
-                url: instance + 'revisedReminder',
+                url: instance + '/revisedReminder',
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(reminderFeedback)
                 
